@@ -24,17 +24,18 @@ def save_model(model,path,verbose=0):
 	with open('%s.json' % path,'w') as json_file:
 		json_file.write(model_json)
 	model.save_weights('%s.h5' % path)
-	if verbose: print 'Saved to %s' % path
+	if verbose: print('Saved to %s' % path)
 
 def load_model(path,custom_objects={},verbose=0):
 	from keras.models import model_from_json
 
 	path = splitext(path)[0]
+	print(path)
 	with open('%s.json' % path,'r') as json_file:
 		model_json = json_file.read()
 	model = model_from_json(model_json, custom_objects=custom_objects)
 	model.load_weights('%s.h5' % path)
-	if verbose: print 'Loaded from %s' % path
+	if verbose: print('Loaded from %s' % path)
 	return model
 
 
@@ -89,7 +90,6 @@ def reconstruct(Iorig,I,Y,out_size,threshold=.9):
 			ptsh 	= np.concatenate((label.pts*getWH(Iorig.shape).reshape((2,1)),np.ones((1,4))))
 			H 		= find_T_matrix(ptsh,t_ptsh)
 			Ilp 	= cv2.warpPerspective(Iorig,H,out_size,borderValue=.0)
-
 			TLps.append(Ilp)
 
 	return final_labels,TLps
